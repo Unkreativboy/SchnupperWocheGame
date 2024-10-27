@@ -24,5 +24,11 @@ public class Piece
         _type = createPieceType;
     }
 
-   
+
+    //Override the ToString method to have a easy debug visual
+    public override string ToString()
+    {
+        return _type.ToString();
+    }
+
 }
