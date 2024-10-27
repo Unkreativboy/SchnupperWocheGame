@@ -34,6 +34,12 @@ namespace Unkreativboy
         }
         private void Grid_OnGridObjectChanged(object sender, Grid<T>.OnGridObjectChangedEventArgs e)
         {
+            if(e.gridObject == null)
+            {
+                _debugTextMesh[e.gridPosX, e.gridPosY].text = "0";
+                return;
+            }
+
             _debugTextMesh[e.gridPosX, e.gridPosY].text = e.gridObject.ToString();
         }
 

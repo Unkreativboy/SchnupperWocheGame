@@ -7,19 +7,21 @@ using Unkreativboy;
 public class BoardManager : MonoBehaviour
 {
 
-    private Grid<Piece> board;
-    private GridDebugVisual<Piece> boardDebugVisual;
+    private Grid<Piece> _board;
+    private GridDebugVisual<Piece> _boardDebugVisual;
+
+    private Piece lastPieceCreated;
 
     // Start is called before the first frame update
     void Start()
     {
         
-        board = new Grid<Piece>(8,8,10);
+        _board = new Grid<Piece>(8,8,10);
 
         //inject the board as a reference
-        boardDebugVisual = new GridDebugVisual<Piece>(board);
+        _boardDebugVisual = new GridDebugVisual<Piece>(_board);
         //Call the event that the grid was created
-        board.InvokeOnGridCreated();
+        _board.InvokeOnGridCreated();
     }
 
     // Update is called once per frame
@@ -27,10 +29,27 @@ public class BoardManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            board.SetObjectWithWorldPosition(UtilsClass.GetMouseWorldPosition(), new Piece(Piece.PieceTypes.Kight));
+            
+            PlacePiece(UtilsClass.GetMouseWorldPosition(), Piece.PieceTypes.Mage);
+
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            lastPieceCreated.MoveTo(UtilsClass.GetMouseWorldPosition());
         }
         
        
 
+    }
+
+    private void PlacePiece(Vector3 worldPosition, Piece.PieceTypes pieceType)
+    {
+        _board.WorldPositionToGridPosition(worldPosition, out int x, out int y);
+
+        Piece piece = new Piece(pieceType,x,y, _board);
+        
+        _board.SetObjectWithWorldPosition( worldPosition, piece);
+        //testing
+        lastPieceCreated = piece;
     }
 }
